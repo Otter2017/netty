@@ -304,6 +304,9 @@ public abstract class AbstractBootstrap<B extends AbstractBootstrap<B, C>, C ext
         }
     }
 
+    /**
+     * 服务端绑定端口或地址时，实例化一个知道的channel类，并将其注册到服务端的eventLoop
+     */
     final ChannelFuture initAndRegister() {
         Channel channel = null;
         try {
@@ -320,6 +323,7 @@ public abstract class AbstractBootstrap<B extends AbstractBootstrap<B, C>, C ext
             return new DefaultChannelPromise(new FailedChannel(), GlobalEventExecutor.INSTANCE).setFailure(t);
         }
 
+        // 将初始化的channel注册到服务端eventLoop
         ChannelFuture regFuture = config().group().register(channel);
         if (regFuture.cause() != null) {
             if (channel.isRegistered()) {

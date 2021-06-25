@@ -74,6 +74,9 @@ public abstract class SingleThreadEventExecutor extends AbstractScheduledEventEx
             AtomicReferenceFieldUpdater.newUpdater(
                     SingleThreadEventExecutor.class, ThreadProperties.class, "threadProperties");
 
+    /**
+     * 一次性任务队列
+     */
     private final Queue<Runnable> taskQueue;
 
     private volatile Thread thread;
@@ -971,6 +974,9 @@ public abstract class SingleThreadEventExecutor extends AbstractScheduledEventEx
         return false;
     }
 
+    /**
+     * 执行线程
+     */
     private void doStartThread() {
         assert thread == null;
         executor.execute(new Runnable() {

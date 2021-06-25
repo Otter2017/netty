@@ -41,12 +41,9 @@ import java.nio.channels.SelectionKey;
 import java.nio.channels.spi.SelectorProvider;
 import java.security.AccessController;
 import java.security.PrivilegedAction;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Iterator;
-import java.util.Queue;
-import java.util.Set;
+import java.util.*;
 import java.util.concurrent.Executor;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicLong;
 
 /**
@@ -443,7 +440,6 @@ public final class NioEventLoop extends SingleThreadEventLoop {
         int selectCnt = 0;
         for (;;) {
             try {
-                logger.info("begin loop");
                 int strategy;
                 try {
                     strategy = selectStrategy.calculateStrategy(selectNowSupplier, hasTasks());
@@ -507,7 +503,7 @@ public final class NioEventLoop extends SingleThreadEventLoop {
                         ranTasks = runAllTasks(ioTime * (100 - ioRatio) / ioRatio);
                     }
                 } else {
-                    // 只会执行64个任务
+                    // 只会执行一次64个任务
                     ranTasks = runAllTasks(0); // This will run the minimum number of tasks
                 }
 
