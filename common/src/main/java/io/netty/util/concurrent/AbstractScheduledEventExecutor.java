@@ -43,6 +43,7 @@ public abstract class AbstractScheduledEventExecutor extends AbstractEventExecut
        public void run() { } // Do nothing
     };
 
+    // 定时任务队列 - 包装过的回调
     PriorityQueue<ScheduledFutureTask<?>> scheduledTaskQueue;
 
     long nextTaskId;

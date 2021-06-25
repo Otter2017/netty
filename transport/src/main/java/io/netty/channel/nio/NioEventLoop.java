@@ -436,13 +436,14 @@ public final class NioEventLoop extends SingleThreadEventLoop {
     }
 
     /**
-     * 执行selector操作和线程池内任务
+     * 循环执行selector操作和线程池内任务
      */
     @Override
     protected void run() {
         int selectCnt = 0;
         for (;;) {
             try {
+                logger.info("begin loop");
                 int strategy;
                 try {
                     strategy = selectStrategy.calculateStrategy(selectNowSupplier, hasTasks());
@@ -483,6 +484,7 @@ public final class NioEventLoop extends SingleThreadEventLoop {
                 selectCnt++;
                 cancelledKeys = 0;
                 needsToSelectAgain = false;
+                // 处理IO所占的百分比
                 final int ioRatio = this.ioRatio;
                 boolean ranTasks;
                 if (ioRatio == 100) {
@@ -491,7 +493,7 @@ public final class NioEventLoop extends SingleThreadEventLoop {
                             processSelectedKeys();
                         }
                     } finally {
-                        // Ensure we always run tasks.
+                        // 即便是占100，也会执行所有其他任务
                         ranTasks = runAllTasks();
                     }
                 } else if (strategy > 0) {
@@ -501,9 +503,11 @@ public final class NioEventLoop extends SingleThreadEventLoop {
                     } finally {
                         // Ensure we always run tasks.
                         final long ioTime = System.nanoTime() - ioStartTime;
+                        // 计算执行任务占用的时间，某个任务耗时较长时，可能会堵塞，影响IO处理
                         ranTasks = runAllTasks(ioTime * (100 - ioRatio) / ioRatio);
                     }
                 } else {
+                    // 只会执行64个任务
                     ranTasks = runAllTasks(0); // This will run the minimum number of tasks
                 }
 
@@ -583,6 +587,9 @@ public final class NioEventLoop extends SingleThreadEventLoop {
         }
     }
 
+    /**
+     * 执行关联到本线程的所有channel的select操作
+     */
     private void processSelectedKeys() {
         if (selectedKeys != null) {
             processSelectedKeysOptimized();
