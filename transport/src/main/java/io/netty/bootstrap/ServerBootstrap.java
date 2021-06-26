@@ -202,11 +202,13 @@ public class ServerBootstrap extends AbstractBootstrap<ServerBootstrap, ServerCh
         }
 
         @Override
+
         @SuppressWarnings("unchecked")
         public void channelRead(ChannelHandlerContext ctx, Object msg) {
             final Channel child = (Channel) msg;
 
-            child.pipeline().addLast(childHandler);
+
+
 
             setChannelOptions(child, childOptions, logger);
             setAttributes(child, childAttrs);
