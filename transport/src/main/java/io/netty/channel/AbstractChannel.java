@@ -525,6 +525,7 @@ public abstract class AbstractChannel extends DefaultAttributeMap implements Cha
                         // again so that we process inbound data.
                         //
                         // See https://github.com/netty/netty/issues/4805
+                        // !!!在此将前面注册的0替换为SelectKey.ACCEPT
                         beginRead();
                     }
                 }
