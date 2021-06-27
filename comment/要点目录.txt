@@ -1,0 +1,12 @@
+1.基于Java NIO
+	Channel
+	Selector
+	SelectKey
+2.线程模型:无锁串行线程，提高并发执行效率
+	EventLoop
+	EventLoopGroup
+3.ChannelPipeline ChannelHandler链，每个handler各司其职
+4.ByteBuf优化读写效率
+	直接内存
+	池化
+5.Bootstrap/AbstractBootstrap/ServerBootstrap 组装
