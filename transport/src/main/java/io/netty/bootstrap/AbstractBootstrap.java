@@ -241,6 +241,10 @@ public abstract class AbstractBootstrap<B extends AbstractBootstrap<B, C>, C ext
 
     /**
      * Create a new {@link Channel} and bind it.
+     *
+     * 先制定各个group、channelHandler等变量
+     * 再调用本方法绑定端口、地址，初始服务端serverChannel并注册到主eventLoop
+     * [服务启动的起点]
      */
     public ChannelFuture bind(int inetPort) {
         return bind(new InetSocketAddress(inetPort));

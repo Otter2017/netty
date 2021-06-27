@@ -206,13 +206,8 @@ public class ServerBootstrap extends AbstractBootstrap<ServerBootstrap, ServerCh
         @SuppressWarnings("unchecked")
         public void channelRead(ChannelHandlerContext ctx, Object msg) {
             final Channel child = (Channel) msg;
-
-
-
-
             setChannelOptions(child, childOptions, logger);
             setAttributes(child, childAttrs);
-
             try {
                 //  ！！！将accept建立的channel注册到子事件循环组中
                 childGroup.register(child).addListener(new ChannelFutureListener() {
